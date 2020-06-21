@@ -166,7 +166,29 @@
 
             // store.dispatch(removeGoalAction(0));
             
-            
+            function addTodo() {
+              const input = document.getElementById('todo')
+              const name= input.value 
+              input.value=''
+
+              store.dispatch(addTodoAction({
+                  name,
+                  complete: false,
+                  id: generateId()
+              }))
+            }
+
+            function addGoal() {
+              const input = document.getElementById('goal')
+              const name= input.value 
+              input.value=''
+
+              store.dispatch(addGoalAction({
+                  name,
+                  id: generateId()
+              }))
+            }
+
 		</script>
 	</body>
 </html>
