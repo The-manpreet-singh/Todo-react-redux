@@ -119,7 +119,14 @@
 			}
 			const store = createStore(app);
 			store.subscribe(() => {
-				console.log("The new state is: ", store.getState());
+				//console.log("The new state is: ", store.getState());
+				const { goals, todos } = store.getState();
+
+				document.getElementById("goals").innerHTML = "";
+				document.getElementById("todos").innerHTML = "";
+
+				goals.forEach(addGoalToDom);
+				todos.forEach(addTodoToDom);
 			});
 
 			// store.dispatch(
@@ -164,37 +171,57 @@
 			// 	})
 			// );
 
-            // store.dispatch(removeGoalAction(0));
-            
-            function addTodo() {
-              const input = document.getElementById('todo')
-              const name= input.value 
-              input.value=''
+			// store.dispatch(removeGoalAction(0));
 
-              store.dispatch(addTodoAction({
-                  name,
-                  complete: false,
-                  id: generateId()
-              }))
-            }
+			//DOM Code
+			function addTodo() {
+				const input = document.getElementById("todo");
+				const name = input.value;
+				input.value = "";
 
-            function addGoal() {
-              const input = document.getElementById('goal')
-              const name= input.value 
-              input.value=''
+				store.dispatch(
+					addTodoAction({
+						name,
+						complete: false,
+						id: generateId(),
+					})
+				);
+			}
 
-              store.dispatch(addGoalAction({
-                  name,
-                  id: generateId()
-              }))
-            }
+			function addGoal() {
+				const input = document.getElementById("goal");
+				const name = input.value;
+				input.value = "";
 
-            document.getElementById('todoBtn')
-            .addEventListener('click', addTodo);
- 
-            document.getElementById('goalBtn')
-            .addEventListener('click', addGoal);
+				store.dispatch(
+					addGoalAction({
+						name,
+						id: generateId(),
+					})
+				);
+			}
 
+			document.getElementById("todoBtn").addEventListener("click", addTodo);
+
+			document.getElementById("goalBtn").addEventListener("click", addGoal);
+
+			function addTodoToDom(todo) {
+				const node = document.createElement("li");
+				const text = document.createTextNode(todo.name);
+
+				node.appendChild(text);
+
+				document.getElementById("todos").appendChild(node);
+			}
+
+			function addGoalToDom(goal) {
+				const node = document.createElement("li");
+				const text = document.createTextNode(goal.name);
+
+				node.appendChild(text);
+
+				document.getElementById("goals").appendChild(node);
+			}
 		</script>
 	</body>
 </html>
