@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
-        <title>To-Do</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
+		<title>To-Do</title>
 	</head>
 	<body>
 		<div>
@@ -27,7 +27,7 @@
 			}
 
 			// Library Code: removed add redux file
-			
+
 			// App Code
 			const ADD_TODO = "ADD_TODO";
 			const REMOVE_TODO = "REMOVE_TODO";
@@ -94,10 +94,24 @@
 			// 		goals: goals(state.goals, action),
 			// 	};
 			// }
-			const store = Redux.createStore( Redux.combineReducers({
-                todos,
-                goals,
-            }));
+
+			function checkAndDispatch(store, action) {
+				if (action.type === ADD_TODO && action.todo.name.toLowerCase().includes("bitcoin")) {
+					return alert("Nope, that's a bad ideas.");
+				}
+
+				if (action.type === ADD_GOAL && action.goal.name.toLowerCase().includes("bitcoin")) {
+					return alert("Nope, that's a bad ideas.");
+				}
+
+				return store.dispatch(action);
+			}
+			const store = Redux.createStore(
+				Redux.combineReducers({
+					todos,
+					goals,
+				})
+			);
 			store.subscribe(() => {
 				//console.log("The new state is: ", store.getState());
 				const { goals, todos } = store.getState();
@@ -115,7 +129,8 @@
 				const name = input.value;
 				input.value = "";
 
-				store.dispatch(
+				checkAndDispatch(
+					store,
 					addTodoAction({
 						name,
 						complete: false,
@@ -129,7 +144,8 @@
 				const name = input.value;
 				input.value = "";
 
-				store.dispatch(
+				checkAndDispatch(
+					store,
 					addGoalAction({
 						name,
 						id: generateId(),
@@ -153,7 +169,7 @@
 				const text = document.createTextNode(todo.name);
 
 				const removeBtn = createRemoveButton(() => {
-					store.dispatch(removeTodoAction(todo.id));
+					checkAndDispatch(store, removeTodoAction(todo.id));
 				});
 
 				node.appendChild(text);
@@ -162,7 +178,7 @@
 				node.style.textDecoration = todo.complete ? "line-through" : "none";
 
 				node.addEventListener("click", () => {
-					store.dispatch(toggleTodoAction(todo.id));
+					checkAndDispatch(store, toggleTodoAction(todo.id));
 				});
 
 				document.getElementById("todos").appendChild(node);
@@ -173,7 +189,7 @@
 				const text = document.createTextNode(goal.name);
 
 				const removeBtn = createRemoveButton(() => {
-					store.dispatch(removeGoalAction(goal.id));
+					checkAndDispatch(store, removeGoalAction(goal.id));
 				});
 
 				node.appendChild(text);
