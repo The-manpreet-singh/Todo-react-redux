@@ -1,13 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do</title>
-</head>
-<body>
-    <script>
-        
-    </script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>To-Do</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			// App code
+			const ADD_TODO = "ADD_TODO";
+			const REMOVE_TODO = "REMOVE_TODO";
+			const TOGGLE_TODO = "TOGGLE_TODO";
+			const ADD_GOAL = "ADD_GOAL";
+			const REMOVE_GOAL = "REMOVE_GOAL";
+			const RECEIVE_DATA = "RECEIVE_DATA";
+
+			function addTodoAction(todo) {
+				return {
+					type: ADD_TODO,
+					todo,
+				};
+			}
+
+			function removeTodoAction(id) {
+				return {
+					type: REMOVE_TODO,
+					id,
+				};
+			}
+
+			function toggleTodoAction(id) {
+				return {
+					type: TOGGLE_TODO,
+					id,
+				};
+			}
+
+			function addGoalAction(goal) {
+				return {
+					type: ADD_GOAL,
+					goal,
+				};
+			}
+
+			function removeGoalAction(id) {
+				return {
+					type: REMOVE_GOAL,
+					id,
+				};
+			}
+
+			function receiveDataAction(todos, goals) {
+				return {
+					type: RECEIVE_DATA,
+					todos,
+					goals,
+				};
+			}
+		</script>
+	</body>
 </html>
