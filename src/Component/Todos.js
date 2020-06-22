@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import List from "./List";
-import { handleAddTodo, handleDeleteTodo, handleToggle } from "../actions/todos";
+import { handleAddTodo, handleDeleteTodo, handleToggle } from "../Actions/todos";
 
 class Todos extends React.Component {
 	addItem = (e) => {

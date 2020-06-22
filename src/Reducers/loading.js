@@ -1,4 +1,4 @@
-import { RECEIVE_DATA } from "./../Actions/goals";
+import { RECEIVE_DATA } from "./../Actions/shared";
 
 export default function loading(state = true, action) {
 	switch (action.type) {
