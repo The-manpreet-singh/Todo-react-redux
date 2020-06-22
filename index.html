@@ -1,4 +1,4 @@
-< !DOCTYPE html >
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -10,21 +10,8 @@
 		<title>To-Do</title>
 	</head>
 	<body>
-		<div>
-			<h1>Todo List</h1>
-			<input id="todo" type="text" placeholder="add todo" />
-			<button id="todoBtn">Add Todo</button>
-			<ul id="todos"></ul>
-		</div>
+		
 
-		<div>
-			<h1>Goal</h1>
-			<input id="goal" type="text" placeholder="add goal" />
-			<button id="goalBtn">Add goal</button>
-			<ul id="goals"></ul>
-		</div>
-
-		<hr />
 
 		<div id="app"></div>
 
@@ -126,7 +113,8 @@
 				Redux.applyMiddleware(checker, logger)
 			);
 
-			store.subscribe(() => {
+			{
+				/* store.subscribe(() => {
 				//console.log("The new state is: ", store.getState());
 				const { goals, todos } = store.getState();
 
@@ -208,6 +196,7 @@
 				node.appendChild(removeBtn);
 
 				document.getElementById("goals").appendChild(node);
+			} */
 			}
 		</script>
 
@@ -215,16 +204,17 @@
 			function List(props) {
 				return (
 					<ul>
-        {props.items.map((item) => (
-          <li key={item.id}>
-            <span>
-              {item.name}
-            </span>
-            <button onClick={() => props.remove(item)} >
-              X
-            </button>
-              </li>
-            ) )}
+						{props.items.map((item) => (
+							<li key={item.id}>
+								<span
+									onClick={() => props.toggle && props.toggle(item.id)}
+									style={{ textDecoration: item.complete ? "line-through" : "none" }}
+								>
+									{item.name}
+								</span>
+								<button onClick={() => props.remove(item)}>X</button>
+							</li>
+						))}
 					</ul>
 				);
 			}
@@ -242,26 +232,30 @@
 							id: generateId(),
 						})
 					);
-        }
-      
-      removeItem = (todo) => {
-        this.props.store.dispatch(removeTodoAction(todo.id))
-      }
-      
+				};
+
+				removeItem = (todo) => {
+					this.props.store.dispatch(removeTodoAction(todo.id));
+				};
+
+				toggleItem = (id) => {
+					this.props.store.dispatch(toggleTodoAction(id));
+				};
+
 				render() {
 					return (
 						<div>
 							<h1>Todo List</h1>
 							<input type="text" placeholder="add todo" ref={(input) => (this.input = input)} />
 							<button onClick={this.addItem}>Add ToDo</button>
-							<List remove={this.removeItem} items={this.props.todos} />
+							<List toggle={this.toggleItem} remove={this.removeItem} items={this.props.todos} />
 						</div>
 					);
 				}
 			}
 
 			class Goals extends React.Component {
-        addItem = (e) => {
+				addItem = (e) => {
 					e.preventDefault();
 					const name = this.input.value;
 					this.input.value = "";
@@ -272,15 +266,15 @@
 							id: generateId(),
 						})
 					);
-        }
-       
-        removeItem = (goal) => {
-        this.props.store.dispatch(removeGoalAction(goal.id))
-      }
+				};
+
+				removeItem = (goal) => {
+					this.props.store.dispatch(removeGoalAction(goal.id));
+				};
 				render() {
 					return (
 						<div>
-						<h1>Goals</h1>
+							<h1>Goals</h1>
 							<input type="text" placeholder="add goals" ref={(input) => (this.input = input)} />
 							<button onClick={this.addItem}>Add Goals</button>
 							<List remove={this.removeItem} items={this.props.goals} />
@@ -290,13 +284,13 @@
 			}
 
 			class App extends React.Component {
-        componentDidMount() {
-        const {store} = this.props
-         store.subscribe(()=> this.forceUpdate() )
-        }
+				componentDidMount() {
+					const { store } = this.props;
+					store.subscribe(() => this.forceUpdate());
+				}
 				render() {
-      const {store} = this.props
-      const { todos, goals } = store.getState()
+					const { store } = this.props;
+					const { todos, goals } = store.getState();
 					return (
 						<div>
 							<Todos todos={todos} store={this.props.store} />
