@@ -1,3 +1,7 @@
+## Todo-goals App
+
+##Live url: https://the-manpreet-singh.github.io/Todo-react-redux/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
