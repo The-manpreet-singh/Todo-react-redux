@@ -224,15 +224,15 @@
 				addItem = (e) => {
 					e.preventDefault();
 
-					this.props.store.dispatch(handleAddTodo(this.input.value, () => (this.input.value = "")));
+					this.props.dispatch(handleAddTodo(this.input.value, () => (this.input.value = "")));
 				};
 
 				removeItem = (todo) => {
-					this.props.store.dispatch(handleDeleteTodo(todo));
+					this.props.dispatch(handleDeleteTodo(todo));
 				};
 
 				toggleItem = (id) => {
-					this.props.store.dispatch(handleToggle(id));
+					this.props.dispatch(handleToggle(id));
 				};
 
 				render() {
@@ -247,15 +247,29 @@
 				}
 			}
 
+			class ConnectedTodos extends React.Component {
+				render() {
+					return (
+						<Context.Consumer>
+							{(store) => {
+								const { todos } = store.getState();
+
+								return <Todos todos={todos} dispatch={store.dispatch} />;
+							}}
+						</Context.Consumer>
+					);
+				}
+			}
+
 			class Goals extends React.Component {
 				addItem = (e) => {
 					e.preventDefault();
 
-					this.props.store.dispatch(handleAddGoal(this.input.value, () => (this.input.value = "")));
+					this.props.dispatch(handleAddGoal(this.input.value, () => (this.input.value = "")));
 				};
 
 				removeItem = (goal) => {
-					this.props.store.dispatch(handleDeleteGoal(goal));
+					this.props.dispatch(handleDeleteGoal(goal));
 				};
 				render() {
 					return (
@@ -265,6 +279,20 @@
 							<button onClick={this.addItem}>Add Goals</button>
 							<List remove={this.removeItem} items={this.props.goals} />
 						</div>
+					);
+				}
+			}
+
+			class ConnectedGoals extends React.Component {
+				render() {
+					return (
+						<Context.Consumer>
+							{(store) => {
+								const { goals } = store.getState();
+
+								return <Goals goals={goals} dispatch={store.dispatch} />;
+							}}
+						</Context.Consumer>
 					);
 				}
 			}
@@ -279,7 +307,7 @@
 				}
 				render() {
 					const { store } = this.props;
-					const { todos, goals, loading } = store.getState();
+					const { loading } = store.getState();
 
 					if (loading === true) {
 						return <h3>Loading...</h3>;
@@ -287,8 +315,8 @@
 
 					return (
 						<div>
-							<Todos todos={todos} store={this.props.store} />
-							<Goals goals={goals} store={this.props.store} />
+							<ConnectedTodos />
+							<ConnectedGoals />
 						</div>
 					);
 				}
@@ -310,7 +338,7 @@
 
 			ReactDOM.render(
 				<Provider store={store}>
-					<App />
+					<ConnectedApp />
 				</Provider>,
 				document.getElementById("app")
 			);
